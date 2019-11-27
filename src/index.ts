@@ -19,8 +19,10 @@
     For a Proficient, the documentation must be complete and the program must run and be readable.
         An Approaching might mean incomplete documentation OR hard-to-read code OR not-quite-working code
         Work your way downwrd from there
-    For an Accomplished , some optional requirements or embellishments are required or the code must be particularly beautiful
-    For an Exemplary, I would expect all optional rquirements to be implemented, or additional features of similar or greter
+    For an Accomplished , some optional requirements or embellishments are
+    required or the code must be particularly beautiful
+    For an Exemplary, I would expect all optional rquirements to be implemented,
+    or additional features of similar or greater
         difficulty.
 */
 import { Ball } from "./modules/ball.js";
@@ -31,40 +33,66 @@ let balls: Ball[] = [];
 let snowflakes: Snowflake[] = [];
 let bubbles: Bubble[] = [];
 let clickedIndex = -1;
+let numBubbles = 20;
+let numBalls = 15;
+let numFlakes = 12;
 
+function randomColor() {
+    return ("rgb(" + Math.floor(random(1, 255)) + "," + Math.floor(random(1, 255)) + "," + Math.floor(random(1, 255)) + ")");
+}
 function setup() {
-    let numBubbles = 10;
-    let numBalls = 10;
-    let numFlakes = 10;
-    createCanvas(500, 500);
-    for (/* TODO REQUIRED - fill this in*/) {
-        balls[i] = new Ball(random(25, width - 25), random(25, height - 25), random(10, 50));
+    createCanvas(1000, 500);
+    let i: number = 0;
+    for (i = 0; i < numBalls; i++) {
+        balls[i] = new Ball(random(25, width - 25), random(25, height - 25), random(10, 50), randomColor(), randomColor());
         /* TODO OPTIONAL - make the balls a random color */
     }
-    for (/* TODO REQUIRED  - fill this in*/) {
-        /* TODO REQUIRED - add the bubbles */
+    for (i = 0; i < numBubbles; i++) {
+        bubbles[i] = new Bubble(random(5, width - 5), random(5, height - 5),
+            random(5, 25), 2, 10, "#5e81ff", "#4961fc");
     }
-    for (/* TODO REQUIRED */) {
-        /* TODO REQUIRED - add the snowflakes */
+    for (i = 0; i < numFlakes; i++) {
+        snowflakes[i] = new Snowflake(random(5, width - 5), random(5, height - 5),
+            random(5, 25), 2, random(2, 10), "white", "white");
     }
 }
-
 function draw() {
-    background("skyblue");
-    for (/* TODO REQUIRED*/) {
+    // Hexadecimal color
+    background("#5779FF");
+    /* for loop to move bubbles. The if statement makes it so that if my mouse
+    isn't touching a ball,then the balls will move as normal. However, if I
+    hover my mouse over a specific ball it will stop until I stop to hover
+    over it. */
+    for (let i = 0; i < numBalls; i++) {
         balls[i].draw();
+        if (!balls[i].touchingMouse()) {
+            balls[i].move();
+        }
+    }
+    for (let i = 0; i < numBubbles; i++) {
+        bubbles[i].draw();
+        bubbles[i].move();
+    }
+    for (let i = 0; i < numFlakes; i++) {
+        snowflakes[i].draw();
+        snowflakes[i].move();
+    }
+}
+/*function mousePressed() {
+    for (let i = 0; i < balls.length; i++) {
+        balls[i].stop();
+    }
+ tried to incorporate these functions to make it so when I pressed my mouse
+it would stop all the balls, which it did, but I was unable to make them
+move normally again.
+}
+
+function mouseReleased() {
+    for (let i = 0; i < balls.length; i++) {
         balls[i].move();
     }
-    /* TODO REQUIRED - Draw and move the bubbles and flakes */
 }
-
-/* TODO OPTIONAL - add a function mousePressed() that either stops or starts objects from moving
-   if the mouse is pressed while it is touching them. So you could use this (if careful!) to stop all of the
-   objects from moving then start them back up again. The Ball class has some helper functions that will
-   help you with this, but you'll need to add them to the other classes.
 */
-
-// do not edit the below lines
 window.draw = draw;
 window.setup = setup;
 window.mousePressed = mousePressed;
